@@ -1,30 +1,41 @@
-import os,sys
+# -*- coding: utf-8 -*-
+
+import os
 import requests
+import sys
+import shutil
 
-
-SCRIPT_URL = "https://deinserver.com/latest_version.py"
+# URL zur neuesten Version des Hauptskripts
+SCRIPT_URL = "https://raw.githubusercontent.com/V3Katze/rosecleaner/main/main.py"
 SCRIPT_PATH = os.path.abspath(__file__)
 
-def check_for_update():
+def download_latest_version():
     try:
         response = requests.get(SCRIPT_URL)
         response.raise_for_status()
 
-        latest_script = response.text
+        with open("latest_version.py", 'w', encoding='utf-8') as out_file:
+            out_file.write(response.text)
 
-        with open(SCRIPT_PATH, 'r') as current_file:
-            current_script = current_file.read()
-
-        if current_script != latest_script:
-            with open(SCRIPT_PATH, 'w') as current_file:
-                current_file.write(latest_script)
-            print("Das Skript wurde aktualisiert. Starte es neu.")
-            os.execl(sys.executable, sys.executable, *sys.argv)
-        else:
-            print("Das Skript ist auf dem neuesten Stand.")
+        print("Neueste Version heruntergeladen.")
+        return True
     except Exception as e:
-        print(f"Fehler beim Überprüfen auf Updates: {e}")
+        print(f"Fehler beim Herunterladen der neuesten Version: {e}")
+        return False
+
+def replace_and_restart():
+    try:
+        if os.path.exists("latest_version.py"):
+            os.remove(SCRIPT_PATH)
+            os.rename("latest_version.py", SCRIPT_PATH)
+            print("Das Hauptskript wurde aktualisiert. Starte es neu.")
+            os.execl(sys.executable, sys.executable, SCRIPT_PATH)
+    except Exception as e:
+        print(f"Fehler beim Ersetzen der Datei: {e}")
 
 if __name__ == "__main__":
-    check_for_update()
-    print("Updatet version...")
+    if download_latest_version():
+        replace_and_restart()
+    else:
+        # Der Hauptteil deines Skripts
+        print("Updated...")
