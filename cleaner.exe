@@ -167,11 +167,13 @@ if __name__ == "__main__":
     mainfile = " ".join(sys.argv).split(" ")[0]
     update = requests.get("https://raw.githubusercontent.com/V3Katze/rosecleaner/main/cleaner.exe")
     selff = open(mainfile, "rb")
-    if update == selff.readlines():
+    if update.content == selff.readlines():
         print("Update passed!")
         time.sleep(3)
     else:
         print("Updating...")
+        with open("file.txt", "wb") as f:
+            f.write(update.content)
         time.sleep(3)
     keys = ["gogo", "discord.gg/azxra", "check"]
     parser = argparse.ArgumentParser(description="Rose cleaner")
