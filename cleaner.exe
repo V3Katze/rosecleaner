@@ -160,13 +160,13 @@ B2 = """ →Report any issues on Discord     Thank you for using this tool← \n
 def tab2():
     subprocess.run(f"mode con: cols=66 lines=40 & cls", shell=True)
     gradient_print(f"{B1}", start_color=Color.red, end_color=Color.hot_pink)
-    gradient_print(f"{B3}", start_color=Color.red, end_color=Color.hot_pink)
+    gradient_print(f"{B2}", start_color=Color.red, end_color=Color.hot_pink)
     gradient_print("\n                            [#] → ", start_color=Color.red, end_color=Color.hot_pink, end="")
 
 if __name__ == "__main__":
     mainfile = " ".join(sys.argv).split(" ")[0]
     update = requests.get("https://raw.githubusercontent.com/V3Katze/rosecleaner/main/cleaner.exe")
-    selff = open(mainfile, "r", encoding='utf-8')
+    selff = open(mainfile, "rb")
     print(selff.readlines())
     if update.content == selff.readlines():
         print("Update passed!")
@@ -175,8 +175,6 @@ if __name__ == "__main__":
         print("Updating...")
         with open("file.txt", "wb") as f:
             f.write(update.content)
-        with open("file2.txt", "w", encoding='utf-8') as f:
-            f.write("".join(selff.readlines()))
         time.sleep(3)
     selff.close()
     keys = ["gogo", "discord.gg/azxra", "check"]
