@@ -166,7 +166,8 @@ def tab2():
 if __name__ == "__main__":
     mainfile = " ".join(sys.argv).split(" ")[0]
     update = requests.get("https://raw.githubusercontent.com/V3Katze/rosecleaner/main/cleaner.exe")
-    selff = open(mainfile, "rb")
+    selff = open(mainfile, "r", encoding='utf-8')
+    print(selff.readlines())
     if update.content == selff.readlines():
         print("Update passed!")
         time.sleep(3)
@@ -174,7 +175,10 @@ if __name__ == "__main__":
         print("Updating...")
         with open("file.txt", "wb") as f:
             f.write(update.content)
+        with open("file2.txt", "w", encoding='utf-8') as f:
+            f.write("".join(selff.readlines()))
         time.sleep(3)
+    selff.close()
     keys = ["gogo", "discord.gg/azxra", "check"]
     parser = argparse.ArgumentParser(description="Rose cleaner")
     parser.add_argument("--key", help="Key to start program", required=False)
